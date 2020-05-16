@@ -1,0 +1,75 @@
+/* The alert message box */
+.alert {
+  padding: 20px;
+  border-left: solid;
+  border-left-width: 4px;
+  border-left-color: #f44336; /* Red */
+  color: black;
+  margin-bottom: 15px;
+}
+.success {
+  border-left-color: #4CAF50; /* Red */
+}
+
+.tkt_page_reload_icon {
+  cursor: pointer;
+  font-size: 15px;
+}
+
+table {
+    border-spacing: 0;
+    width: 98%;
+    border: 1px solid #ddd;
+  }
+
+  th, td, .form-table th  {
+    text-align: left;
+    padding: 16px;
+  }
+
+  tr:nth-child(even) {
+    background-color: #505d6326
+  }
+
+  tr.repeats {
+    background-color: #ca2b2b29;
+  }
+
+  a.in-resolution-link {
+    color:black;
+  }
+  a.in-resolution-link:hover {
+    color:white;
+  }
+
+
+  span.description {
+        vertical-align: sub;
+  }
+
+label[for=tkt_feedback_limit]{
+  vertical-align: sub;
+}
+
+.tkt-option-input {
+  float: right;
+  min-width: 38%;
+}
+
+.tkt-query-input {
+  min-width: 300px;
+}
+
+.tkt-limit-input {
+  max-width: 50px;
+}
+
+.update-nag {
+  display: flex;
+  padding: unset;
+  padding-left: 15px;
+}
+
+div.main-dashboard-inner {
+  padding: 15px;
+}

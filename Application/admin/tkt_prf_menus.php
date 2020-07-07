@@ -1,14 +1,15 @@
 <?php
 
-
-
+add_action( 'admin_menu', 'tkt_prf_add_menu' );
 //Callback fo adding main menu page
-function tkt_prf_add_main_menu() {
+function tkt_prf_add_menu() {
 
-	$page = add_menu_page( 'TukuToi Performance', 'TukuToi Performance', 'manage_options', 'tktprf-performance', 'tkt_prf_main_menu_page', TKT_ADMIN_MENU_ICON);
-	add_action( "admin_print_styles-{$page}", 'tkt_prf_enqueue_styles' );
+	$pages 		= array();
+	$pages[] 	= add_submenu_page( 'tkt-main', 'TukuToi Speed Up', 'Speed Up', 'manage_options', 'tkt-speed', 'tkt_speed_menu_page', 1 );
+	foreach ($pages as $page) {
+		add_action( "admin_print_styles-{$page}", 'tkt_enqueue_styles' );
+	}
 	
-	// 	add_action('load-'.$page, 'ytqb_admin_active_add_help_tab');
 }
 
 // function yqb_sub_menu_page() {
@@ -21,7 +22,8 @@ function tkt_prf_add_main_menu() {
  * top level menu:
  * callback functions
  */
-function tkt_prf_main_menu_page() {
+
+function tkt_speed_menu_page() {
 	if ( ! current_user_can( 'manage_options' ) ) {
  		return;
  	}

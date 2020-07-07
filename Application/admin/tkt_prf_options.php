@@ -1,23 +1,11 @@
-<?php 
+<?php
 
-//Callback fo adding sub menu pages
-function tkt_prf_add_sub_menu() {
-	// $sub_pages 		= array();
-	// $sub_pages[] 	= add_submenu_page( 'yt-query-builder', 'Main Dashboard', 'Main Dashboard', 'manage_options', 'yt-query-builder', 'tkt_prf_main_menu_page' );
-	// $sub_pages[] 	= add_submenu_page( 'yt-query-builder', 'Feedback Requested', 'Feedback Requested', 'manage_options', 'feedback-requested', 'tkt_prf_sub_menu_page' );
-	// $sub_pages[] 	= add_submenu_page( 'yt-query-builder', 'Bugs', 'Bugs', 'manage_options', 'bugs', 'tkt_prf_sub_menu_page_bugs' );
-	// $sub_pages[] 	= add_submenu_page( 'yt-query-builder', 'Releases', 'Releases', 'manage_options', 'releases', 'tkt_prf_sub_menu_page_releases' );
-	// foreach ($sub_pages as $sub_page) {
-	// 	add_action( "admin_print_styles-{$sub_page}", 'tkt_prf_enqueue_styles' );
-	// 	add_action( "admin_print_scripts-{$sub_page}", 'tkt_prf_enqueue_sub_scripts' );
-	// }
-}
-
+add_action( 'admin_init', 'tkt_prf_settings_init' );
 //Initiate Settings options
 function tkt_prf_settings_init() {
 
 	// register a new setting
- 	register_setting( 'tktprf', 'tkt_prf_options' );
+ 	register_setting( 'tktprf', 'tkt_prf_options', array( 'default'=>array('tkt_prf_style_handles_to_remove' => '', 'tkt_prf_script_handles_to_remove' => '', 'tkt_prf_archives_to_exclude' => '', 'tkt_prf_single_objects_to_exclude' => '', 'tkt_prf_script_styles_log' => '') ) );
  
  	// register a new section
 	add_settings_section(
@@ -32,7 +20,8 @@ function tkt_prf_settings_init() {
 		"tkt_prf_style_handles_to_remove" => "All styles to remove",
 	    "tkt_prf_script_handles_to_remove" => "All scripts to remove",
 	    "tkt_prf_archives_to_exclude" => "Archives to exclude from optimization (Post or tax type slug)",
-	    "tkt_prf_single_objects_to_exclude" => "Pages or Posts or else single objects to exclude (Numeric ID)"
+	    "tkt_prf_single_objects_to_exclude" => "Pages or Posts or else single objects to exclude (Numeric ID)",
+	    "tkt_prf_script_styles_log" => "Log Scripts and Styles"
 	    //Add meta box by post to exclude specific scriptts or stypes onthere
 	);
 
@@ -66,7 +55,7 @@ function tkt_prf_section_developers_cb( $args ) {
 
 function tkt_prf_archives_to_exclude_cb( $args ) {
 	// get the value of the setting we've registered with register_setting()
- 	$options = get_option( 'tkt_prf_options' );
+ 	$options = get_option( 'tkt_prf_options');
  	// output the field
  	?><span class="description"><?php esc_html_e( 'Add comma separated Archive Types to exclude from optimization', 'tktprf' ); ?>
  		</span>
@@ -76,7 +65,7 @@ function tkt_prf_archives_to_exclude_cb( $args ) {
 
 function tkt_prf_script_handles_to_remove_cb( $args ) {
 	// get the value of the setting we've registered with register_setting()
- 	$options = get_option( 'tkt_prf_options' );
+ 	$options = get_option( 'tkt_prf_options');
  	// output the field
  	?><span class="description"><?php esc_html_e( 'Add comma separated handles of scripts to remove', 'tktprf' ); ?>
  		</span>
@@ -86,7 +75,7 @@ function tkt_prf_script_handles_to_remove_cb( $args ) {
 
 function tkt_prf_single_objects_to_exclude_cb( $args ) {
 	// get the value of the setting we've registered with register_setting()
- 	$options = get_option( 'tkt_prf_options' );
+ 	$options = get_option( 'tkt_prf_options');
  	// output the field
  	?><span class="description"><?php esc_html_e( 'Add post ID of each page, post or else single object that should be excluded from optimization', 'tktprf' ); ?>
  		</span>
@@ -104,9 +93,26 @@ function tkt_prf_style_handles_to_remove_cb( $args ) {
  	<?php
 }
 
+function tkt_prf_script_styles_log_cb( $args ) {
+ 	$options = get_option( 'tkt_prf_options');
+ 	// output the field
+ 	?><span class="description"><?php esc_html_e( 'Add comma separated handles of styles to remove', 'tktprf' ); ?>
+ 		</span>
+ 		<input 
+ 		type="checkbox" 
+ 		class="tkt-option-input" 
+ 		id="<?php echo esc_attr( $args['label_for'] ); ?>" 
+ 		data-custom="<?php echo esc_attr( $args['tkt_prf_custom_data'] ); ?>" 
+ 		name="tkt_prf_options[<?php echo esc_attr( $args['label_for'] ); ?>]" 
+ 		<?php echo isset($options['tkt_prf_script_styles_log']) ? 'value="'.$options['tkt_prf_script_styles_log'].'"' :'value="0"'; ?> 
+ 		<?php echo isset($options['tkt_prf_script_styles_log']) ? 'checked="checked"' : ''; ?> 
+ 		/>
+ 	<?php
+}
+
 //Gather settings for usage in query engines
 //possible options @see $settings_array
-function tkt_all_options($option){
+function tkt_prf_all_options($option){
 	$option_set = get_option( 'tkt_prf_options' )[$option];
 	return $option_set;
 }

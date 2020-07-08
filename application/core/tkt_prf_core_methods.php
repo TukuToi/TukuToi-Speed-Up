@@ -40,7 +40,6 @@ function tkt_cleanup_scripts() {
 add_action( 'wp_print_styles', 'tkt_cleanup_styles', PHP_INT_MAX );
 
 function tkt_cleanup_styles() {
-
 	$options = get_option( 'tkt_prf_options' );
 	$styles_to_remove_array = explode(',', $options["tkt_prf_style_handles_to_remove"]);
 	
@@ -108,7 +107,12 @@ function disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
 }
 
 //If option "script logging" is checked, log styles and scripts to header as HTML comments
-add_action( 'wp_head', 'tkt_print_script_styles_head',999);
+
+$options = get_option( 'tkt_prf_options');
+if (isset($options['tkt_prf_script_styles_log'])){
+	add_action( 'wp_head', 'tkt_print_script_styles_head',999);
+}
+
 function tkt_prf_log_scripts_styles() {
 
     $result = [];
@@ -134,14 +138,10 @@ function tkt_prf_log_scripts_styles() {
 }
 
 function tkt_print_script_styles_head() {
-	echo '<!--TKT SCRIPTS_LOG START--><!--';
 	foreach (tkt_prf_log_scripts_styles()['scripts'] as $script) {
 		echo $script;
 	}
-	echo '--><!--TKT SCRIPTS_LOG END.-->';
-	echo '<!--TKT STYLES_LOG START--><!--';
 	foreach (tkt_prf_log_scripts_styles()['styles'] as $style) {
 		echo $style;
 	}
-	echo '--><!--TKT STYLES_LOG END.-->';
 }
